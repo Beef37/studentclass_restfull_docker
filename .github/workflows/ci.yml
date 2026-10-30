@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      package: write
+      packages: write
 
     steps:
     - name: checkout repository
@@ -20,7 +20,7 @@ jobs:
       with:
         registry: ${{env.REGISTRY}}
         username: ${{github.actor}}
-        password: ${{secret.GITGUB_TOKEN}}
+        password: ${{secret.GITHUB_TOKEN}}
     - name: convert repository owner to lowercase
       run: echo "REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
     - name: build and push database image
@@ -38,6 +38,6 @@ jobs:
     - name: build and push frontend image
       uses: docker/build-push-action@v5
       with:
-        context:
+        context: ./frontend
         push: true
         tags: ${{env.REGISTRY}}/${{env.REPO_OWNER}}/studentclass-frontend:latest
